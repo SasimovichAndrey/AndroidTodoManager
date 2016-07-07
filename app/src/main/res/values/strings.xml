@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MyTodoManager</string>
+
+    <string name="hello_world">Наконец-то, блядь, заработало</string>
+</resources>

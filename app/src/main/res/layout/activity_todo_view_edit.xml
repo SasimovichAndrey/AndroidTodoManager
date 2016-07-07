@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:id="@+id/todoTitleEditText" android:text="Todo title"
+        android:layout_marginLeft="8pt"
+        android:layout_marginTop="8pt"
+        android:textSize="@dimen/font_default_size"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:id="@+id/todoDateTextView" android:text="Todo date"
+        android:layout_marginLeft="8pt"
+        android:layout_marginTop="8pt"
+        android:textSize="@dimen/font_default_size"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:id="@+id/todoContentEditText" android:text="Todo content"
+        android:layout_marginLeft="8pt"
+        android:layout_marginTop="8pt"
+        android:textSize="@dimen/font_default_size"/>
+
+</LinearLayout>
