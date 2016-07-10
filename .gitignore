@@ -39,4 +39,6 @@ captures/
 # Keystore files
 *.jks
 
+# My custom ignores
 features to implement and bugs to fix
+.idea/
