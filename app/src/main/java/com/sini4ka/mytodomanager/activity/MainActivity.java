@@ -1,19 +1,24 @@
 package com.sini4ka.mytodomanager.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import com.sini4ka.mytodomanager.R;
 import com.sini4ka.mytodomanager.data.DatabaseHelper;
@@ -26,7 +31,7 @@ import java.util.Random;
 
 
 public class MainActivity extends AbstractAppCompatActivity {
-    private SimpleCursorAdapter adapter;
+    private TodoListItemCursorAdapter adapter;
     private DatabaseHelper dbHelper;
 
     @Override
@@ -54,9 +59,7 @@ public class MainActivity extends AbstractAppCompatActivity {
         // Set adapter for ListView
         ListView todoListView = (ListView)findViewById(R.id.todoList);
         Cursor cursor = this.dbHelper.getAllTodosCursor();
-        String[] columns = new String[]{"title"};
-        int[] to = new int[] {R.id.todo_list_item_title};
-        this.adapter = new SimpleCursorAdapter(this, R.layout.todo_list_item, cursor, columns, to, 0);
+        this.adapter = new TodoListItemCursorAdapter(this, cursor);
         todoListView.setAdapter(this.adapter);
 
         // Set click event listener on ListView items
@@ -120,5 +123,40 @@ public class MainActivity extends AbstractAppCompatActivity {
     public void refresh(){
         Cursor cursor = this.dbHelper.getAllTodosCursor();
         this.adapter.swapCursor(cursor);
+    }
+
+    private class TodoListItemCursorAdapter extends CursorAdapter{
+
+        public TodoListItemCursorAdapter(Context context, Cursor c) {
+            super(context, c, 0);
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            return LayoutInflater.from(context).inflate(R.layout.todo_list_item, parent, false); // have no idea what this means :)
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            TextView titleTextView = (TextView)view.findViewById(R.id.todo_list_item_title);
+            String todoTitle = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+            String todoContent = cursor.getString(cursor.getColumnIndexOrThrow("content"));
+
+            String resultTitle = null;
+            if(!(todoTitle == null || todoTitle.trim().isEmpty())){
+                resultTitle = todoTitle;
+            }
+            else{
+                String todoContentFirstLine = todoContent.split("\n", 2)[0];
+                if(todoContentFirstLine.length() <= 20){
+                    resultTitle = todoContentFirstLine;
+                }
+                else{
+                    resultTitle = todoContentFirstLine.substring(0, 19) + "...";
+                }
+            }
+
+            titleTextView.setText(resultTitle);
+        }
     }
 }
